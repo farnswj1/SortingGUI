@@ -77,7 +77,7 @@ class SortingGUI(pyglet.window.Window):
             try:
                 i, j = next(self.next_swap)
                 self.swap(i, j)
-            except:
+            except StopIteration as e:
                 self.next_swap = None
 
     def swap(self, i, j):
@@ -104,7 +104,7 @@ class SortingGUI(pyglet.window.Window):
             self.next_swap = self.bubble_sort()
         elif button == pyglet.window.mouse.RIGHT:
             self.reset()
-            self.next_swap = self.insertion_sort()
+            self.next_swap = self.selection_sort()
 
     def on_draw(self):
         """Draws the contents onto the window"""
