@@ -54,20 +54,17 @@ class SortingGUI(pyglet.window.Window):
             # Swap the minimum element with the first element
             yield i, min_idx
 
-    # TODO: it doesn't work
     def insertion_sort(self):
         """Insertion sort generator that yields the next indices to be swapped"""
         # Traverse through 1 upwards
         for i in range(1, len(self.values)):
+            key = self.values[i]
             j = i - 1
-            print("Is this doing anything?")
-            while j >= 0 and self.values[i] < self.values[j]:
-                print("maybe")
-                yield j, j + 1
-                #self.values[j + 1] = self.values[j]
-                j -= 1
 
-            self.values[j + 1] = self.values[i]
+            # Push the element down until it's not less than the next element
+            while j >= 0 and key < self.values[j]:
+                yield j, j + 1
+                j -= 1
 
     def update(self, dt):
         """Updates the GUI"""
@@ -113,7 +110,7 @@ class SortingGUI(pyglet.window.Window):
 
     def run(self):
         """Runs the GUI"""
-        self.next_swap = self.bubble_sort()
+        self.next_swap = self.insertion_sort()
         pyglet.app.run()
 
 
