@@ -10,4 +10,4 @@ To install the requirements, enter:
 ## Run Command
 Before running, ensure you have Python 3 installed. To run the program, enter:
 
-`python sorting_gui.py`
+`python main.py`
