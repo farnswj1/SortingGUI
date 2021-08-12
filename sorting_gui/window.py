@@ -60,7 +60,7 @@ class Window(pyglet.window.Window):
 
         # List of sprites used to represent the values
         self.sprites = [
-            pyglet.shapes.BorderedRectangle(x, 0, 10, value, batch=self.main_batch)
+            pyglet.shapes.BorderedRectangle(x, 0, 8, value, batch=self.main_batch)
             for x, value in zip(range(200, 1000, 8), self.values)
         ]
 
