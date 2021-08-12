@@ -98,7 +98,7 @@ def heap_sort(arr):
     n = len(arr)
  
     # Build a maxheap
-    for i in reversed(range(n//2 - 1)):
+    for i in reversed(range(n//2)):
         yield from heapify(arr, n, i)
  
     # Extract the elements one by one
