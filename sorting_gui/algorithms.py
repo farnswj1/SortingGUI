@@ -10,6 +10,7 @@ def bubble_sort(arr):
             if arr[j] > arr[j + 1]:
                 yield j, j + 1
 
+
 def selection_sort(arr):
     """Selection sort generator that yields the next indices to be swapped"""
     for i in range(len(arr)):
@@ -23,6 +24,7 @@ def selection_sort(arr):
         # Swap the minimum element with the first element
         yield i, min_idx
 
+
 def insertion_sort(arr):
     """Insertion sort generator that yields the next indices to be swapped"""
     # Traverse through 1 upwards
@@ -34,6 +36,7 @@ def insertion_sort(arr):
         while j >= 0 and key < arr[j]:
             yield j, j + 1
             j -= 1
+
 
 # TODO: algorithm isn't working yet
 def merge_sort(arr):
@@ -72,6 +75,7 @@ def merge_sort(arr):
     
     yield from __merge_sort(arr)
 
+
 def heap_sort(arr):
     """Heap sort generator that yields the next indices to be swapped"""
     # Internal function
@@ -106,6 +110,7 @@ def heap_sort(arr):
         yield 0, i
         yield from heapify(arr, i, 0)
 
+
 def quick_sort(arr):
     """Quick sort generator that yields the next indices to be swapped"""
     # Internal function
@@ -130,6 +135,7 @@ def quick_sort(arr):
             yield from __quick_sort(arr, index + 1, high)
     
     yield from __quick_sort(arr, 0, len(arr) - 1)
+
 
 def cocktail_sort(arr):
     """Cocktail sort generator that yields the next indices to be swapped"""
@@ -161,6 +167,7 @@ def cocktail_sort(arr):
         
         iterate_up = not iterate_up  # Go the other direction
 
+
 def odd_even_sort(arr):
     """Odd-even sort generator that yields the next indices to be swapped"""
     size = len(arr)
@@ -181,3 +188,91 @@ def odd_even_sort(arr):
             if arr[i] > arr[i + 1]: 
                 yield i, i + 1
                 swapped = True
+
+
+def shell_sort(arr):
+    gap = len(arr) // 2
+
+    while gap > 0:
+        i = 0
+        j = gap
+
+        while j < len(arr):
+            if arr[i] > arr[j]:
+                yield i, j
+
+            i += 1
+            j += 1
+
+            k = i
+            while k - gap > -1:
+                if arr[k - gap] > arr[k]:
+                    yield k, k - gap
+                k -= 1
+
+        gap //= 2
+
+
+def gnome_sort(arr):
+    """Gnome sort generator that yields the next indices to be swapped"""
+    index = 0
+
+    # Continue until the index surpasses the length of the list
+    while index < len(arr):
+        if index == 0:
+            index += 1
+        if arr[index] >= arr[index - 1]:
+            index += 1
+        else:
+            yield index, index - 1
+            index -= 1
+
+
+def pancake_sort(arr):
+    """Pancake sort generator that yields the next indices to be swapped"""
+    # Internal function
+    def flip(arr, i):
+        start = 0
+
+        while start < i:
+            yield i, start
+            start += 1
+            i -= 1
+
+    # Start from the complete array and one by one reduce current size by one
+    for curr_size in reversed(range(1, len(arr))):
+        # Find index of the maximum element in the list
+        max_index = arr.index(max(arr[:curr_size]))
+
+        # Move the maximum element to end of the array if it's not already at the end
+        if max_index != curr_size - 1:
+            # To move at the end, first move the maximum number to the beginning
+            yield from flip(arr, max_index)
+
+            # Now move the maximum number to the end by reversing the current array
+            yield from flip(arr, curr_size)
+
+
+def stooge_sort(arr):
+    """Stooge sort generator that yields the next indices to be swapped"""
+    # Internal function
+    def __stooge_sort(arr, l, h):
+        if l < h:
+            # If the first element is smaller than the last, swap them
+            if arr[l] > arr[h]:
+                yield l, h
+
+            # If there are more than 2 elements in the array
+            if h - l + 1 > 2:
+                t = (h - l + 1) // 3
+
+                # Recursively sort first 2 / 3 elements
+                yield from __stooge_sort(arr, l, (h - t))
+
+                # Recursively sort last 2 / 3 elements
+                yield from __stooge_sort(arr, l + t, (h))
+
+                # Recursively sort first 2 / 3 elements again to confirm
+                yield from __stooge_sort(arr, l, (h - t))
+
+    yield from __stooge_sort(arr, 0, len(arr) - 1)

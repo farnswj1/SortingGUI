@@ -23,14 +23,22 @@ class Window(pyglet.window.Window):
 
         # List of sorting algortihms
         list_of_algorithms = (
+            "Bitonic Sort",
+            "Bogo Sort",
             "Bubble Sort",
-            "Selection Sort",
+            "Cocktail Sort",
+            "Counting Sort",
+            "Gnome Sort",
+            "Heap Sort",
             "Insertion Sort",
             "Merge Sort",
-            "Heap Sort",
+            "Odd-Even Sort",
+            "Pancake Sort",
             "Quick Sort",
-            "Cocktail Sort",
-            "Odd-Even Sort"
+            "Radix Sort",
+            "Selection Sort",
+            "Shell Sort",
+            "Stooge Sort"
         )
 
         # Options (will act as buttons for the UI) 
@@ -43,7 +51,7 @@ class Window(pyglet.window.Window):
                 anchor_y="center",
                 batch=self.main_batch
             ) for sort_name, y in zip(
-                list_of_algorithms, range(0, 50 * len(list_of_algorithms), 50)
+                list_of_algorithms, range(0, 800, 50)
             )
         ]
 
@@ -88,25 +96,41 @@ class Window(pyglet.window.Window):
     # Handle the events when the mouse is pressed
     def on_mouse_press(self, x, y, button, modifiers):
         # Handle the left click
-        if button == pyglet.window.mouse.LEFT and 0 <= x < 200 and 0 <= y < 800:
+        if button == pyglet.window.mouse.LEFT and 0 <= x < 200:
             self.reset()  # First, reset the GUI
 
-            if 750 <= y < 800:
+            if 750 <= y < 800:    # Bitonic sort
+                pass  #self.next_swap = algorithms.bitonic_sort(self.values)
+            elif 700 <= y < 750:  # Bogo sort
+                pass  #self.next_swap = algorithms.bogo_sort(self.values)
+            elif 650 <= y < 700:  # Bubble sort
                 self.next_swap = algorithms.bubble_sort(self.values)
-            elif 700 <= y < 750:
-                self.next_swap = algorithms.selection_sort(self.values)
-            elif 650 <= y < 700:
-                self.next_swap = algorithms.insertion_sort(self.values)
-            elif 600 <= y < 650:
-                self.next_swap = algorithms.merge_sort(self.values)
-            elif 550 <= y < 600:
-                self.next_swap = algorithms.heap_sort(self.values)
-            elif 500 <= y < 550:
-                self.next_swap = algorithms.quick_sort(self.values)
-            elif 450 <= y < 500:
+            elif 600 <= y < 650:  # Cocktail sort
                 self.next_swap = algorithms.cocktail_sort(self.values)
-            elif 400 <= y < 450:
+            elif 550 <= y < 600:  # Counting sort
+                pass  #self.next_swap = algorithms.counting_sort(self.values)
+            elif 500 <= y < 550:  # Gnome sort
+                self.next_swap = algorithms.gnome_sort(self.values)
+            elif 450 <= y < 500:  # Heap sort
+                self.next_swap = algorithms.heap_sort(self.values)
+            elif 400 <= y < 450:  # Insertion sort
+                self.next_swap = algorithms.insertion_sort(self.values)
+            elif 350 <= y < 400:  # Merge sort
+                self.next_swap = algorithms.merge_sort(self.values)
+            elif 300 <= y < 350:  # Odd-even sort
                 self.next_swap = algorithms.odd_even_sort(self.values)
+            elif 250 <= y < 300:  # Pancake sort
+                self.next_swap = algorithms.pancake_sort(self.values)
+            elif 200 <= y < 250:  # Quick sort
+                self.next_swap = algorithms.quick_sort(self.values)
+            elif 150 <= y < 200:  # Radix sort
+                pass  #self.next_swap = algorithms.radix_sort(self.values)
+            elif 100 <= y < 150:  # Selection sort
+                self.next_swap = algorithms.selection_sort(self.values)
+            elif 50 <= y < 100:   # Shell sort
+                self.next_swap = algorithms.shell_sort(self.values)
+            elif 0 <= y < 50:     # Stooge sort
+                self.next_swap = algorithms.stooge_sort(self.values)
 
     def on_draw(self):
         """Draws the contents onto the window"""
