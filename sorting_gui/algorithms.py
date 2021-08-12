@@ -102,7 +102,7 @@ def heap_sort(arr):
         yield from heapify(arr, n, i)
  
     # Extract the elements one by one
-    for i in reversed(range(n - 1)):
+    for i in reversed(range(n)):
         yield 0, i
         yield from heapify(arr, i, 0)
 
