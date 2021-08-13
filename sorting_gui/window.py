@@ -1,7 +1,6 @@
 # Imported libraries
 import pyglet
 import random
-import time
 from . import algorithms
 
 
@@ -27,7 +26,7 @@ class Window(pyglet.window.Window):
             "Bogo Sort",
             "Bubble Sort",
             "Cocktail Sort",
-            "Counting Sort",
+            "Comb Sort",
             "Gnome Sort",
             "Heap Sort",
             "Insertion Sort",
@@ -99,15 +98,15 @@ class Window(pyglet.window.Window):
             self.reset()  # First, reset the GUI
 
             if 750 <= y < 800:    # Bitonic sort
-                pass  #self.next_swap = algorithms.bitonic_sort(self.values)
+                self.next_swap = algorithms.bitonic_sort(self.values)
             elif 700 <= y < 750:  # Bogo sort
-                pass  #self.next_swap = algorithms.bogo_sort(self.values)
+                self.next_swap = algorithms.bogo_sort(self.values)
             elif 650 <= y < 700:  # Bubble sort
                 self.next_swap = algorithms.bubble_sort(self.values)
             elif 600 <= y < 650:  # Cocktail sort
                 self.next_swap = algorithms.cocktail_sort(self.values)
-            elif 550 <= y < 600:  # Counting sort
-                pass  #self.next_swap = algorithms.counting_sort(self.values)
+            elif 550 <= y < 600:  # Comb sort
+                self.next_swap = algorithms.comb_sort(self.values)
             elif 500 <= y < 550:  # Gnome sort
                 self.next_swap = algorithms.gnome_sort(self.values)
             elif 450 <= y < 500:  # Heap sort
@@ -123,7 +122,7 @@ class Window(pyglet.window.Window):
             elif 200 <= y < 250:  # Quick sort
                 self.next_swap = algorithms.quick_sort(self.values)
             elif 150 <= y < 200:  # Radix sort
-                pass  #self.next_swap = algorithms.radix_sort(self.values)
+                self.next_swap = algorithms.radix_sort(self.values)
             elif 100 <= y < 150:  # Selection sort
                 self.next_swap = algorithms.selection_sort(self.values)
             elif 50 <= y < 100:   # Shell sort
