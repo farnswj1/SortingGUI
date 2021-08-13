@@ -40,46 +40,54 @@ def insertion_sort(arr):
 
 # TODO: algorithm isn't working yet
 def merge_sort(arr):
-    def __merge_sort(arr):
-        """Merge sort generator that yields the next indices to be swapped"""
-        # Base case
-        if len(arr) <= 1:
-            return arr
-        
-        # Internal function
-        def merge(first_half, second_half):
-            arr = []
-            while len(first_half) > 0 and len(second_half) > 0:
-                if first_half[0] < second_half[0]:
-                    arr.append(first_half[0])
-                    first_half.pop(0)
-                else:
-                    arr.append(second_half[0])
-                    second_half.pop(0)
+    """Merge sort generator that yields the next indices to be swapped"""
+    # Internal function
+    def __merge(arr, left, middle, right):
+        n1 = middle + 1
+        n2 = right + 1
 
-            while len(first_half) > 0:
-                arr.append(first_half[0])
-                first_half.pop(0)
+        i = left
+        j = middle + 1
+        k = left
 
-            while len(second_half) > 0:
-                arr.append(second_half[0])
-                second_half.pop(0)
+        # Add the lesser elements until one of them runs out
+        while i < n1 and j < n2:
+            if arr[i] < arr[j]:
+                yield i, k
+                i += 1
+            else:
+                yield j, k
+                j += 1
+            k += 1
 
-            return arr
-        
-        # "Divide and conquer"
-        first_half = yield from __merge_sort(arr[:(len(arr) // 2)])
-        second_half = yield from __merge_sort(arr[(len(arr) // 2):])
+        # Add the remaining elements from the left partition
+        while i < n1:
+            yield i, k
+            i += 1
+            k += 1
 
-        return merge(first_half, second_half)
+        # Add the remaining elements from the right partition
+        while j < n2:
+            yield j, k
+            j += 1
+            k += 1
+
+    def __merge_sort(arr, left, right):
+        # Continue until the left index is not less than the right index
+        if left < right:
+            # "Divide and conquer"
+            middle = (left + right) // 2
+            yield from __merge_sort(arr, left, middle)
+            yield from __merge_sort(arr, middle + 1, right)
+            yield from __merge(arr, left, middle, right)
     
-    yield from __merge_sort(arr)
+    yield from __merge_sort(arr, 0, len(arr) - 1)
 
 
 def heap_sort(arr):
     """Heap sort generator that yields the next indices to be swapped"""
     # Internal function
-    def heapify(arr, n, i):
+    def __heapify(arr, n, i):
         largest = i
         l = 2*i + 1
         r = 2*i + 2
@@ -97,40 +105,40 @@ def heap_sort(arr):
             yield i, largest
     
             # Heapify the root
-            yield from heapify(arr, n, largest)
+            yield from __heapify(arr, n, largest)
     
     n = len(arr)
  
     # Build a maxheap
     for i in reversed(range(n//2)):
-        yield from heapify(arr, n, i)
+        yield from __heapify(arr, n, i)
  
     # Extract the elements one by one
     for i in reversed(range(n)):
         yield 0, i
-        yield from heapify(arr, i, 0)
+        yield from __heapify(arr, i, 0)
 
 
 def quick_sort(arr):
     """Quick sort generator that yields the next indices to be swapped"""
     # Internal function
+    def __partition(arr, low, high):
+        pivot = arr[high]
+        i = low
+
+        for j in range(low, high):
+            if arr[j] < pivot:
+                yield i, j
+                i = i + 1
+
+        yield i, high
+        return i
+
+    # Internal function
     def __quick_sort(arr, low, high):
-        # Nested internal function
-        def partition(arr, low, high):
-            pivot = arr[high]
-            i = low
-
-            for j in range(low, high):
-                if arr[j] < pivot:
-                    yield i, j
-                    i = i + 1
-
-            yield i, high
-            return i
-
         # Sort until the indices cross
         if low < high:
-            index = yield from partition(arr, low, high)
+            index = yield from __partition(arr, low, high)
             yield from __quick_sort(arr, low, index - 1)
             yield from __quick_sort(arr, index + 1, high)
     
@@ -191,6 +199,7 @@ def odd_even_sort(arr):
 
 
 def shell_sort(arr):
+    """Shell sort generator that yields the next indices to be swapped"""
     gap = len(arr) // 2
 
     while gap > 0:
@@ -231,7 +240,7 @@ def gnome_sort(arr):
 def pancake_sort(arr):
     """Pancake sort generator that yields the next indices to be swapped"""
     # Internal function
-    def flip(arr, i):
+    def __flip(arr, i):
         start = 0
 
         while start < i:
@@ -247,10 +256,10 @@ def pancake_sort(arr):
         # Move the maximum element to end of the array if it's not already at the end
         if max_index != curr_size - 1:
             # To move at the end, first move the maximum number to the beginning
-            yield from flip(arr, max_index)
+            yield from __flip(arr, max_index)
 
             # Now move the maximum number to the end by reversing the current array
-            yield from flip(arr, curr_size)
+            yield from __flip(arr, curr_size)
 
 
 def stooge_sort(arr):

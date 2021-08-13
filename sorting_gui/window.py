@@ -21,7 +21,7 @@ class Window(pyglet.window.Window):
         # Line that divides the buttons from the bars
         self.line = pyglet.shapes.Line(200, 0, 200, 1000, batch=self.main_batch)
 
-        # List of sorting algortihms
+        # List of sorting algorithms
         list_of_algorithms = (
             "Bitonic Sort",
             "Bogo Sort",
@@ -58,8 +58,8 @@ class Window(pyglet.window.Window):
         # List of values in random order
         self.values = list(range(8, 801, 8))
 
-        # List of sprites used to represent the values
-        self.sprites = [
+        # List of bars used to represent the values
+        self.bars = [
             pyglet.shapes.BorderedRectangle(x, 0, 8, value, batch=self.main_batch)
             for x, value in zip(range(200, 1000, 8), self.values)
         ]
@@ -78,17 +78,17 @@ class Window(pyglet.window.Window):
                 self.next_swap = None
 
     def swap(self, i, j):
-        """Swaps the values and their respective sprites based on the indices given"""
+        """Swaps the values and their respective bars based on the indices given"""
         self.values[i], self.values[j] = self.values[j], self.values[i]
-        self.sprites[i].height, self.sprites[j].height = self.sprites[j].height, self.sprites[i].height
+        self.bars[i].height, self.bars[j].height = self.bars[j].height, self.bars[i].height
 
     def reset(self):
         """Reset the GUI"""
         random.shuffle(self.values)
 
-        # Update the sprites' heights with the randomized values
-        for sprite, value in zip(self.sprites, self.values):
-            sprite.height = value
+        # Update the bars' heights with the randomized values
+        for bar, value in zip(self.bars, self.values):
+            bar.height = value
 
         # Remove the generator function
         self.next_swap = None
