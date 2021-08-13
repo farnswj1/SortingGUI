@@ -8,7 +8,8 @@ def bubble_sort(arr):
 
             # Starting element is greater than the next element
             if arr[j] > arr[j + 1]:
-                yield j, j + 1
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                yield
 
 
 def selection_sort(arr):
@@ -22,7 +23,8 @@ def selection_sort(arr):
                 min_idx = j
 
         # Swap the minimum element with the first element
-        yield i, min_idx
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+        yield
 
 
 def insertion_sort(arr):
@@ -34,43 +36,25 @@ def insertion_sort(arr):
 
         # Push the element down until it's not less than the next element
         while j >= 0 and key < arr[j]:
-            yield j, j + 1
+            arr[j], arr[j + 1] = arr[j + 1], arr[j]
+            yield
             j -= 1
 
 
-# TODO: algorithm isn't working yet
 def merge_sort(arr):
     """Merge sort generator that yields the next indices to be swapped"""
     # Internal function
     def __merge(arr, left, middle, right):
-        n1 = middle + 1
-        n2 = right + 1
+        for i in range(middle, right + 1):
+            key = arr[i]
+            j = i - 1
 
-        i = left
-        j = middle + 1
-        k = left
-
-        # Add the lesser elements until one of them runs out
-        while i < n1 and j < n2:
-            if arr[i] < arr[j]:
-                yield i, k
-                i += 1
-            else:
-                yield j, k
-                j += 1
-            k += 1
-
-        # Add the remaining elements from the left partition
-        while i < n1:
-            yield i, k
-            i += 1
-            k += 1
-
-        # Add the remaining elements from the right partition
-        while j < n2:
-            yield j, k
-            j += 1
-            k += 1
+            # Push the element down until it's not less than the next element
+            while j >= left and key < arr[j]:
+                arr[j + 1] = arr[j]
+                j -= 1
+            arr[j + 1] = key
+            yield
 
     def __merge_sort(arr, left, right):
         # Continue until the left index is not less than the right index
@@ -102,8 +86,9 @@ def heap_sort(arr):
     
         # Change root if needed
         if largest != i:
-            yield i, largest
-    
+            arr[i], arr[largest] = arr[largest], arr[i]
+            yield
+
             # Heapify the root
             yield from __heapify(arr, n, largest)
     
@@ -115,7 +100,8 @@ def heap_sort(arr):
  
     # Extract the elements one by one
     for i in reversed(range(n)):
-        yield 0, i
+        arr[0], arr[i] = arr[i], arr[0]
+        yield
         yield from __heapify(arr, i, 0)
 
 
@@ -128,10 +114,12 @@ def quick_sort(arr):
 
         for j in range(low, high):
             if arr[j] < pivot:
-                yield i, j
-                i = i + 1
+                arr[i], arr[j] = arr[j], arr[i]
+                yield
+                i += 1
 
-        yield i, high
+        arr[i], arr[high] = arr[high], arr[i]
+        yield
         return i
 
     # Internal function
@@ -159,16 +147,18 @@ def cocktail_sort(arr):
         if iterate_up:
             # Going up
             for i in range(start, end): 
-                if arr[i] > arr[i + 1]: 
-                    yield i, i + 1
+                if arr[i] > arr[i + 1]:
+                    arr[i], arr[i + 1] = arr[i + 1], arr[i]
+                    yield
                     swapped = True
             
             end -= 1  # Decrement the end index
         else: 
             # Going down
             for i in range(end - 1, start - 1, -1): 
-                if arr[i] > arr[i + 1]: 
-                    yield i, i + 1
+                if arr[i] > arr[i + 1]:
+                    arr[i], arr[i + 1] = arr[i + 1], arr[i]
+                    yield
                     swapped = True
             
             start += 1  # Increment the start index
@@ -187,14 +177,16 @@ def odd_even_sort(arr):
 
         # Odd indices
         for i in range(1, size - 1, 2): 
-            if arr[i] > arr[i + 1]: 
-                yield i, i + 1
+            if arr[i] > arr[i + 1]:
+                arr[i], arr[i + 1] = arr[i + 1], arr[i]
+                yield
                 swapped = True
         
         # Even indices
         for i in range(0, size - 1, 2): 
-            if arr[i] > arr[i + 1]: 
-                yield i, i + 1
+            if arr[i] > arr[i + 1]:
+                arr[i], arr[i + 1] = arr[i + 1], arr[i]
+                yield
                 swapped = True
 
 
@@ -208,7 +200,8 @@ def shell_sort(arr):
 
         while j < len(arr):
             if arr[i] > arr[j]:
-                yield i, j
+                arr[i], arr[j] = arr[j], arr[i]
+                yield
 
             i += 1
             j += 1
@@ -216,7 +209,8 @@ def shell_sort(arr):
             k = i
             while k - gap > -1:
                 if arr[k - gap] > arr[k]:
-                    yield k, k - gap
+                    arr[k], arr[k - gap] = arr[k - gap], arr[k]
+                    yield
                 k -= 1
 
         gap //= 2
@@ -233,7 +227,8 @@ def gnome_sort(arr):
         if arr[index] >= arr[index - 1]:
             index += 1
         else:
-            yield index, index - 1
+            arr[index], arr[index - 1] = arr[index - 1], arr[index]
+            yield
             index -= 1
 
 
@@ -244,7 +239,8 @@ def pancake_sort(arr):
         start = 0
 
         while start < i:
-            yield i, start
+            arr[i], arr[start] = arr[start], arr[i]
+            yield
             start += 1
             i -= 1
 
@@ -269,7 +265,8 @@ def stooge_sort(arr):
         if l < h:
             # If the first element is smaller than the last, swap them
             if arr[l] > arr[h]:
-                yield l, h
+                arr[l], arr[h] = arr[h], arr[l]
+                yield
 
             # If there are more than 2 elements in the array
             if h - l + 1 > 2:

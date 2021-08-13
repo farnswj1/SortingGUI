@@ -72,23 +72,22 @@ class Window(pyglet.window.Window):
         # If a generator function is provided, get the next pair of indices to swap if they exist
         if self.next_swap:
             try:
-                i, j = next(self.next_swap)
-                self.swap(i, j)
+                next(self.next_swap)
+                self.update_bars()
             except StopIteration as e:
                 self.next_swap = None
 
-    def swap(self, i, j):
-        """Swaps the values and their respective bars based on the indices given"""
-        self.values[i], self.values[j] = self.values[j], self.values[i]
-        self.bars[i].height, self.bars[j].height = self.bars[j].height, self.bars[i].height
+    def update_bars(self):
+        """Update the bars' heights"""
+        for bar, value in zip(self.bars, self.values):
+            bar.height = value
 
     def reset(self):
         """Reset the GUI"""
         random.shuffle(self.values)
 
         # Update the bars' heights with the randomized values
-        for bar, value in zip(self.bars, self.values):
-            bar.height = value
+        self.update_bars()
 
         # Remove the generator function
         self.next_swap = None
