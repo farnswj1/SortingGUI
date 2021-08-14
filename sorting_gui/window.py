@@ -8,59 +8,59 @@ from . import algorithms
 class Window(pyglet.window.Window):
     def __init__(self, *args, **kwargs):
         """Constructor"""
-        super().__init__(caption="Sorting GUI", width=1000, height=800, *args, **kwargs)
+        super().__init__(caption="Sorting GUI", width=600, height=512, *args, **kwargs)
 
         # Set the frame rate
-        self.frame_rate = 1/30
+        self.frame_rate = 1/50
         pyglet.clock.schedule_interval(self.update, self.frame_rate)
 
         # Main batch
         self.main_batch = pyglet.graphics.Batch()
 
         # Line that divides the buttons from the bars
-        self.line = pyglet.shapes.Line(200, 0, 200, 1000, batch=self.main_batch)
+        self.line = pyglet.shapes.Line(88, 0, 88, 1024, batch=self.main_batch)
 
         # List of sorting algorithms
         list_of_algorithms = (
-            "Bitonic Sort",
-            "Bogo Sort",
-            "Bubble Sort",
-            "Cocktail Sort",
-            "Comb Sort",
-            "Gnome Sort",
-            "Heap Sort",
-            "Insertion Sort",
-            "Merge Sort",
-            "Odd-Even Sort",
-            "Pancake Sort",
-            "Quick Sort",
-            "Radix Sort",
-            "Selection Sort",
-            "Shell Sort",
-            "Stooge Sort"
+            "Bitonic",
+            "Bogo",
+            "Bubble",
+            "Cocktail",
+            "Comb",
+            "Gnome",
+            "Heap",
+            "Insertion",
+            "Merge",
+            "Odd-Even",
+            "Pancake",
+            "Quick",
+            "Radix",
+            "Selection",
+            "Shell",
+            "Stooge"
         )
 
         # Options (will act as buttons for the UI) 
         self.options = [
             pyglet.text.Label(
                 sort_name,
-                x=100,
-                y=775 - y,
+                x=44,
+                y=496 - y,
                 anchor_x="center",
                 anchor_y="center",
                 batch=self.main_batch
             ) for sort_name, y in zip(
-                list_of_algorithms, range(0, 800, 50)
+                list_of_algorithms, range(0, 512, 32)
             )
         ]
 
         # List of values in random order
-        self.values = list(range(8, 801, 8))
+        self.values = list(range(4, 513, 4))
 
         # List of bars used to represent the values
         self.bars = [
-            pyglet.shapes.BorderedRectangle(x, 0, 8, value, batch=self.main_batch)
-            for x, value in zip(range(200, 1000, 8), self.values)
+            pyglet.shapes.BorderedRectangle(x, 0, 4, value, batch=self.main_batch)
+            for x, value in zip(range(88, 600, 4), self.values)
         ]
 
         # Swap generator (initially null)
@@ -83,7 +83,8 @@ class Window(pyglet.window.Window):
 
     def reset(self):
         """Reset the GUI"""
-        random.shuffle(self.values)
+        # Reset the list of values (to avoid potential data loss if switching mid-sort)
+        self.values = random.sample(list(range(4, 513, 4)), k=len(self.values))
 
         # Update the bars' heights with the randomized values
         self.update_bars()
@@ -91,43 +92,43 @@ class Window(pyglet.window.Window):
         # Remove the generator function
         self.next_swap = None
 
-    # Handle the events when the mouse is pressed
     def on_mouse_press(self, x, y, button, modifiers):
+        """Handle the events when the mouse is pressed"""
         # Handle the left click
         if button == pyglet.window.mouse.LEFT and 0 <= x < 200:
             self.reset()  # First, reset the GUI
 
-            if 750 <= y < 800:    # Bitonic sort
+            if 480 <= y < 512:    # Bitonic sort
                 self.next_swap = algorithms.bitonic_sort(self.values)
-            elif 700 <= y < 750:  # Bogo sort
+            elif 448 <= y < 480:  # Bogo sort
                 self.next_swap = algorithms.bogo_sort(self.values)
-            elif 650 <= y < 700:  # Bubble sort
+            elif 416 <= y < 448:  # Bubble sort
                 self.next_swap = algorithms.bubble_sort(self.values)
-            elif 600 <= y < 650:  # Cocktail sort
+            elif 384 <= y < 416:  # Cocktail sort
                 self.next_swap = algorithms.cocktail_sort(self.values)
-            elif 550 <= y < 600:  # Comb sort
+            elif 352 <= y < 384:  # Comb sort
                 self.next_swap = algorithms.comb_sort(self.values)
-            elif 500 <= y < 550:  # Gnome sort
+            elif 320 <= y < 352:  # Gnome sort
                 self.next_swap = algorithms.gnome_sort(self.values)
-            elif 450 <= y < 500:  # Heap sort
+            elif 288 <= y < 320:  # Heap sort
                 self.next_swap = algorithms.heap_sort(self.values)
-            elif 400 <= y < 450:  # Insertion sort
+            elif 256 <= y < 288:  # Insertion sort
                 self.next_swap = algorithms.insertion_sort(self.values)
-            elif 350 <= y < 400:  # Merge sort
+            elif 224 <= y < 256:  # Merge sort
                 self.next_swap = algorithms.merge_sort(self.values)
-            elif 300 <= y < 350:  # Odd-even sort
+            elif 192 <= y < 224:  # Odd-even sort
                 self.next_swap = algorithms.odd_even_sort(self.values)
-            elif 250 <= y < 300:  # Pancake sort
+            elif 160 <= y < 192:  # Pancake sort
                 self.next_swap = algorithms.pancake_sort(self.values)
-            elif 200 <= y < 250:  # Quick sort
+            elif 128 <= y < 160:  # Quick sort
                 self.next_swap = algorithms.quick_sort(self.values)
-            elif 150 <= y < 200:  # Radix sort
+            elif 96 <= y < 128:   # Radix sort
                 self.next_swap = algorithms.radix_sort(self.values)
-            elif 100 <= y < 150:  # Selection sort
+            elif 64 <= y < 96:    # Selection sort
                 self.next_swap = algorithms.selection_sort(self.values)
-            elif 50 <= y < 100:   # Shell sort
+            elif 32 <= y < 64:    # Shell sort
                 self.next_swap = algorithms.shell_sort(self.values)
-            elif 0 <= y < 50:     # Stooge sort
+            elif 0 <= y < 32:     # Stooge sort
                 self.next_swap = algorithms.stooge_sort(self.values)
 
     def on_draw(self):
@@ -135,6 +136,7 @@ class Window(pyglet.window.Window):
         self.clear()
         self.main_batch.draw()
 
-    def run(self):
+    @staticmethod
+    def run():
         """Runs the GUI"""
         pyglet.app.run()
