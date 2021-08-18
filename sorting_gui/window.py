@@ -54,7 +54,7 @@ class Window(pyglet.window.Window):
             )
         ]
 
-        # List of values in random order
+        # List of values
         self.values = list(range(4, 513, 4))
 
         # List of bars used to represent the values
@@ -95,7 +95,7 @@ class Window(pyglet.window.Window):
     def on_mouse_press(self, x, y, button, modifiers):
         """Handle the events when the mouse is pressed"""
         # Handle the left click
-        if button == pyglet.window.mouse.LEFT and 0 <= x < 200:
+        if button == pyglet.window.mouse.LEFT and 0 <= x < 88:
             self.reset()  # First, reset the GUI
 
             if 480 <= y < 512:    # Bitonic sort
