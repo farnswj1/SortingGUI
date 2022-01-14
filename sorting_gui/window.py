@@ -10,6 +10,12 @@ class Window(pyglet.window.Window):
         """Constructor"""
         super().__init__(caption="Sorting GUI", width=600, height=512, *args, **kwargs)
 
+        # Get the system mouse cursors and set to the default cursor
+        self.cursor_default = self.get_system_mouse_cursor(self.CURSOR_DEFAULT)
+        self.cursor_hand = self.get_system_mouse_cursor(self.CURSOR_HAND)
+        self.cursor = self.cursor_default
+        self.set_mouse_cursor(self.cursor)
+
         # Set the frame rate
         self.frame_rate = 1/50
         pyglet.clock.schedule_interval(self.update, self.frame_rate)
@@ -92,10 +98,20 @@ class Window(pyglet.window.Window):
         # Remove the generator function
         self.next_swap = None
 
+    def on_mouse_motion(self, x, y, dx, dy):
+        """Handle the events when the mouse is moved"""
+        # Set the cursor to the hand if it's over the buttons. Otherwise, set to default
+        if x <= 88 and self.cursor != self.cursor_hand:
+            self.cursor = self.cursor_hand
+            self.set_mouse_cursor(self.cursor)
+        elif 88 < x and self.cursor != self.cursor_default:
+            self.cursor = self.cursor_default
+            self.set_mouse_cursor(self.cursor)
+
     def on_mouse_press(self, x, y, button, modifiers):
         """Handle the events when the mouse is pressed"""
         # Handle the left click
-        if button == pyglet.window.mouse.LEFT and 0 <= x < 88:
+        if button == pyglet.window.mouse.LEFT and x < 88:
             self.reset()  # First, reset the GUI
 
             if 480 <= y < 512:    # Bitonic sort
