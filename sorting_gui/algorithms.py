@@ -120,20 +120,38 @@ def comb_sort(arr):
                 yield
 
 
-def gnome_sort(arr):
-    """Gnome sort generator"""
-    index = 0
+def cycle_sort(arr):
+    """Cycle sort generator"""
+    # Find cycles to rotate
+    for start in range(0, len(arr) - 1):
+        item = arr[start]
 
-    # Continue until the index surpasses the length of the list
-    while index < len(arr):
-        if index == 0:
-            index += 1
-        if arr[index] >= arr[index - 1]:
-            index += 1
-        else:
-            arr[index], arr[index - 1] = arr[index - 1], arr[index]
+        # Find where to place the item
+        pos = start
+        for i in range(start + 1, len(arr)):
+            if arr[i] < item:
+                pos += 1
+
+        if pos != start:  # Found a cycle
+            while item == arr[pos]:
+                pos += 1
+
+            arr[pos], item = item, arr[pos]
             yield
-            index -= 1
+
+            # Rotate the rest of the cycle
+            while pos != start:
+                # Find where to put the item
+                pos = start
+                for i in range(start + 1, len(arr)):
+                    if arr[i] < item:
+                        pos += 1
+
+                while item == arr[pos]:
+                    pos += 1
+
+                arr[pos], item = item, arr[pos]
+                yield
 
 
 def heap_sort(arr):

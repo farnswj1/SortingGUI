@@ -27,7 +27,7 @@ class Window(pyglet.window.Window):
             "Bubble",
             "Cocktail",
             "Comb",
-            "Gnome",
+            "Cycle",
             "Heap",
             "Insertion",
             "Merge",
@@ -108,8 +108,8 @@ class Window(pyglet.window.Window):
                 self.next_swap = algorithms.cocktail_sort(self.values)
             elif 352 <= y < 384:  # Comb sort
                 self.next_swap = algorithms.comb_sort(self.values)
-            elif 320 <= y < 352:  # Gnome sort
-                self.next_swap = algorithms.gnome_sort(self.values)
+            elif 320 <= y < 352:  # Cycle sort
+                self.next_swap = algorithms.cycle_sort(self.values)
             elif 288 <= y < 320:  # Heap sort
                 self.next_swap = algorithms.heap_sort(self.values)
             elif 256 <= y < 288:  # Insertion sort
